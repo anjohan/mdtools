@@ -1,10 +1,7 @@
 #!/usr/bin/python
 
 
-def find_data(filename="log.lammps",
-              l0="Step Time",
-              l1="Loop time",
-              verbose=False):
+def find_data(filename="log.lammps", verbose=False):
     """
     Extract data from a LAMMPs log file.
 
@@ -13,15 +10,6 @@ def find_data(filename="log.lammps",
     filename: str, optional
         Name of LAMMPs log fil.
         Default: log.lammps.
-    l0: str, optional
-        String which must be contained in the header
-        of each chunk of data.
-        Default: "Step Time", which comes from
-        "thermo_style custom step time".
-    l1: str, optional
-        String contained in the first line after
-        each chunk of data.
-        Default: "Loop time".
     verbose: bool, optional
         If True, the header of each chunk will
         be printed. Default: False.
@@ -41,7 +29,9 @@ def find_data(filename="log.lammps",
 
     for i in range(N):
         line = lines[i]
-        if l0 in line:
+        if "Per MPI rank memory" in line:
+            i = i + 1
+            line = lines[i]
             if verbose:
                 print(line)
             headers = line.split()
@@ -49,7 +39,7 @@ def find_data(filename="log.lammps",
                 if word not in data.keys():
                     data[word] = []
             i += 1
-            while i < N and l1 not in lines[i]:
+            while i < N and "Loop time" not in lines[i]:
                 word = lines[i].split()
                 for j in range(len(word)):
                     data[headers[j]].append(float(word[j]))
@@ -98,21 +88,6 @@ if __name__ == "__main__":
     parser.add_argument(
         "-i", "--input", nargs="+", dest="f", metavar="INPUT_FILE(s)")
     parser.add_argument(
-        "-l0",
-        "--startdataline",
-        default="Step Time",
-        dest="l0",
-        help="String contained in the header of each chunk of data.\
-         Default: \"Step Time\",\
-         which comes from \"thermo_style custom step time...\".")
-    parser.add_argument(
-        "-l1",
-        "--enddataline",
-        default="Loop time",
-        dest="l1",
-        help="String contained in the first line after each chunk of data.\
-         Default: \"Loop time\".")
-    parser.add_argument(
         "-s", "--save", default=None, dest="s", metavar="PLOT_FILENAME")
     parser.add_argument(
         "--smooth", default=0, type=int, metavar="SMOOTHING_PARAMETER")
@@ -137,7 +112,7 @@ if __name__ == "__main__":
         args.f = [args.f]
 
     for infile in args.f:
-        data = find_data(infile, args.l0, args.l1, verbose=True)
+        data = find_data(infile, verbose=True)
         x += data[args.x]
         y += data[args.y]
 
