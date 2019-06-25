@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 
 def find_data(filename="log.lammps", verbose=False):
@@ -26,6 +26,9 @@ def find_data(filename="log.lammps", verbose=False):
         lines = infile.readlines()
     N = len(lines)
     data = {}
+
+    if verbose:
+        print(f"Reading {filename}")
 
     for i in range(N):
         line = lines[i]
@@ -113,8 +116,9 @@ if __name__ == "__main__":
 
     for infile in args.f:
         data = find_data(infile, verbose=True)
-        x += data[args.x]
-        y += data[args.y]
+        if data:
+            x += data[args.x]
+            y += data[args.y]
 
     if not args.smooth == 0:
         y = smooth(y, args.smooth)
