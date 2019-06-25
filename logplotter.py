@@ -28,7 +28,7 @@ def find_data(filename="log.lammps", verbose=False):
     data = {}
 
     if verbose:
-        print(f"Reading {filename}")
+        print("Reading " + filename)
 
     for i in range(N):
         line = lines[i]
