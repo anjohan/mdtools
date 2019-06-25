@@ -2,6 +2,8 @@
 
 This is a (growing) collection of tools I use when working with LAMMPs.
 
+See also [lammps-binary-dump-reader](https://github.com/anjohan/lammps-binary-dump-reader).
+
 ## logplotter.py
 
 This serves two purposes:
@@ -10,9 +12,14 @@ Basic usage: `logplotter.py -i log.part1 log.part2 -x Time -y Temp`. Use `logplo
 * A module containing the `find_data` function, which reads a log file and returns the contained data as a dictionary.
 Basic usage: `data = find_data("log.lammps"); plt.plot(data["Step"], data["Temp"])`.
 
+### Installation
+```
+pip install .
+```
+
 ## sync.sh
 
-A bash script for continuous downloading of a remote data file until no further changes are detected.
+A janky bash script for continuous downloading of a remote data file until no further changes are detected.
 
 Arguments:
 1. The remote file, e.g. `cluster:/work/username/dump.simulation`
