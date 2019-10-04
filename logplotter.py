@@ -88,6 +88,8 @@ if __name__ == "__main__":
         "-x", "--x", default="Step", dest="x", metavar="XAXIS_QUANTITY")
     parser.add_argument(
         "-y", "--y", default="Temp", dest="y", metavar="YAXIS_QUANTITY")
+    parser.add_argument("--xlabel", metavar="XLABEL")
+    parser.add_argument("--ylabel", metavar="YLABEL")
     parser.add_argument(
         "-i", "--input", nargs="+", dest="f", metavar="INPUT_FILE(s)")
     parser.add_argument(
@@ -128,8 +130,10 @@ if __name__ == "__main__":
     y = y[:finished_length]
     if not args.noplot:
         plt.plot(x, y)
-        plt.xlabel(args.x)
-        plt.ylabel(args.y)
+        xlabel = args.xlabel if args.xlabel else args.x
+        ylabel = args.ylabel if args.ylabel else args.y
+        plt.xlabel(xlabel)
+        plt.ylabel(ylabel)
         plt.grid()
         if args.s is not None:
             plt.savefig(args.s, bbox_inches="tight")
