@@ -85,12 +85,12 @@ if __name__ == "__main__":
     from argparse import ArgumentParser
 
     parser = ArgumentParser(
-        "Example: " "logplotter.py -i log.lammps -x Time -y Press\n"
+        "Example: " "logplotter.py -i log.lammps -x Time -y Temp Press\n"
     )
 
     parser.add_argument("-x", "--x", default="Step", dest="x", metavar="XAXIS_QUANTITY")
     parser.add_argument(
-        "-y", "--y", default="Temp", dest="y", metavar="YAXIS_QUANTITY", nargs="+"
+        "-y", "--y", default=["Temp"], dest="y", metavar="YAXIS_QUANTITY", nargs="+"
     )
     parser.add_argument("--xlabel", metavar="XLABEL")
     parser.add_argument("--ylabel", metavar="YLABEL")
@@ -113,7 +113,7 @@ if __name__ == "__main__":
     if not args.noplot:
         import matplotlib.pyplot as plt
 
-        plt.style.use("seaborn")
+        plt.style.use("seaborn-v0_8-colorblind")
 
     x = []
     ys = [[] for i in args.y]
